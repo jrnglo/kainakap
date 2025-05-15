@@ -139,143 +139,109 @@ $connection->close();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.0.1/dist/css/multi-select-tag.css">
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.0.1/tailwind.min.css'>
-    <style>
+<style>
+:root {
+  --primary-color: #2d7487;
+  --secondary-color: #374151;
+  --background-color: #F8F9FA;
+  --text-light: #F7EFED;
+  --verified-color: #2E7D32;
+  --rejected-color: #CC0000;
+  --pending-color: #0055B8;
+}
+
 body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  background-color: var(--background-color);
+  font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
 .navbar {
-    position: fixed;
-    width: 100%;
-    background-color: #2d7487; /* New background color */
-    z-index: 1000;
-    top: 0;
+  position: fixed;
+  width: 100%;
+  background-color: var(--primary-color);
+  z-index: 1000;
+  top: 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .side-nav {
-    position: fixed;
-    top: 56px; /* Height of the navbar */
-    left: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 14%;
-    background-color: #374151;
-    height: calc(100vh - 56px); /* Full height minus navbar */
-    z-index: 999;
+  position: fixed;
+  top: 56px;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  width: 10%;
+  min-width: 200px;
+  background-color: var(--secondary-color);
+  height: calc(100vh - 56px);
+  z-index: 999;
+  padding: 1rem 0;
+  margin: 0;
+  box-sizing: border-box;
+  gap: 0.5rem; /* Space between nav items */
 }
 
-.side-nav a, .side-nav input {
-    color: #F7EFED;
-    text-decoration: none;
-    margin-bottom: 0.5rem;
-    display: flex;
-    justify-content: flex-start; /* Align content to the left */
-    font-size: 15px;
-    width: 100%; /* Ensure full width for alignment */
-    padding: 0.5rem; /* Add padding for clickable area */
+.side-nav a, 
+.side-nav input {
+  color: var(--text-light);
+  padding: 0.75rem 1.5rem;
+  margin: 0.25rem 0;
+  transition: all 0.2s ease;
 }
 
+.side-nav a.active {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-left: 4px solid var(--primary-color);
+}
+
+.side-nav a:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Changed content margin and padding */
 .content {
-    margin-left: 15%; /* Width of the sidebar */
-    padding: 1rem;
-    flex: 1;
+  margin-left: 10%;  /* Reduced from 15% to match sidebar width */
+  padding: 2rem 2rem 2rem 0.5rem; /* Further reduced left padding */
+  flex: 1;
+  box-sizing: border-box;
 }
 
-i {
-    margin-right: 5px;
+/* Added table container for better control */
+.table-container {
+  width: 105%;
+  margin-right: 1rem;
+  overflow-y: auto;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-/* Default styles for navigation links */
-a {
-    display: block; /* Ensures each link takes up full width */
-    padding: 10px;
-    text-decoration: none;
-    color: #000; /* Default text color */
-}
-.modal-body {
-    display: block; /* Ensures each link takes up full width */
-    padding: 10px;
-    text-decoration: none;
-    color: #000; /* Default text color */
-}
-
-/* Styles for inactive links */
-a:not(.active) {
-    color: #999; /* Grey out inactive links */
-}
-
-/* Styles for active link */
-a.active {
-    color: #F7EFED; /* Active link text color */
-    background-color: rgba(255, 255, 255, 0.1); /* Example background color for active link */
-}
-
-a:hover {
-    color: #F7EFED;
-    background-color: rgba(255, 255, 255, 0.1); /* Slight white background color on hover */
-}
-
-/* Hover effect for logout link */
-.nav-link:hover {
-    color: #F7EFED;
-    background-color: rgba(255, 255, 255, 0.1); /* Slight white background color on hover */
-}
-
-.nav-link {
-    margin-top: auto; /* Push nav-links to the bottom */
-}
-
-img {
-    width: 100%; /* Ensure images fit within their container */
-    height: auto; /* Maintain aspect ratio */
-    display: block;
-}
-
-/* Custom CSS for spacing */
-.row {
-    margin-top: 20px; /* Top margin for the entire row of cards */
-}
-
-.col-md-4 {
-    margin-bottom: 20px; /* Bottom margin for each card column */
-}
-
-.card {
-    height: 100%; /* Ensure each card stretches to full height */
-}
-
-.card-body {
-    height: 100%; /* Ensure card body stretches to full height */
-    display: flex;
-    flex-direction: column;
-}
-
-.card-text {
-    flex-grow: 1; /* Allow card text to expand within the card body */
-}
-
-.btn {
-    margin-top: auto; /* Push button to the bottom of card body */
-}
-
-p {
-    display: block; /* Ensures each link takes up full width */
-    padding: 10px;
-    color: #F7EFED;
-}
-
+/* Adjusted table alignment */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px; /* Optional: Add margin to the top of the table */
+  width: calc(100% - 1rem); /* Account for container margin */
+  margin-left: 0;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* First column alignment fix */
+td:first-child,
+th:first-child {
+  padding-left: 15px !important;
+}
+
+/* Last column spacing */
+td:last-child,
+th:last-child {
+  padding-right: 20px;
 }
 
 th, td {
-    border: 1px solid #ddd;
     padding: 12px; /* Increased padding for better spacing */
     text-align: left;
     white-space: nowrap; /* Prevent text from wrapping */
@@ -288,80 +254,119 @@ th {
     font-weight: bold; /* Make table headers bold */
 }
 
-.profile img {
-    width: 80px; /* Set a fixed width for the images */
-    height: 80px; /* Set a fixed height for the images */
-    object-fit: cover; /* Cover the container while maintaining aspect ratio */
-    display: block; /* Ensure images are block-level elements */
-}
-.image-thumbnail {
-    width: 100px; /* Adjust as needed */
-    height: 100px; /* Adjust as needed */
-    object-fit: cover;
-    cursor: pointer; /* Indicate that the image is clickable */
+td img {
+    width: 100px !important;       /* Fixed width */
+    height: 100px !important;      /* Fixed height */
+    object-fit: cover;             /* Crop to fit */
+    object-position: center;       /* Center the image */
+    margin: 0 auto;               /* Center horizontally */
+    display: block;               /* Remove inline spacing */
 }
 
-.caption a {
-    color: #0066cc;
-    text-decoration: none;
+.status {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
-.memb {
-    text-align: center; /* Center align text */
-}
-
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-.overlay img {
-    max-width: 90%;
-    max-height: 90%;
-    object-fit: contain;
-}
-.close-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background-color: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
-      border: none;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 20px; /* Smaller font size for a minimalist look */
-      color: rgba(0, 0, 0, 0.6); /* Subtle color for the '×' */
-      transition: background-color 0.3s, color 0.3s; /* Smooth transition */
-    }
-    .close-btn:hover {
-      background-color: rgba(255, 255, 255, 1); /* Solid white on hover */
-      color: black; /* Darker color for '×' on hover */
-    }
-    .verified {
-    background-color: #d4edda; /* Light green */
+.verified { 
+  background-color: #e8f5e9;
+  color: var(--verified-color);
 }
 
 .rejected {
-    background-color: #f8d7da; /* Light red */
+  background-color: #ffebee;
+  color: var(--rejected-color);
 }
 
 .not-verified {
-    background-color: #fff3cd; /* Light yellow */
+  background-color: #e3f2fd;
+  color: var(--pending-color);
 }
 
-  </style>
+.modal-content {
+  border-radius: 12px;
+}
+
+.modal-header {
+  border-bottom: none;
+  padding: 1.5rem;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+/* Legend Styles */
+.status-legend {
+  font-size: 0.9rem;
+}
+
+.color-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.color-dot.verified { background-color: #2E7D32; }
+.color-dot.rejected { background-color: #CC0000; }
+.color-dot.not-verified { background-color: #0055B8; }
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+#rejectionReasonText ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin: 0;
+}
+
+#rejectionReasonText li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+  color:rgb(0, 0, 0);
+}
+.verified { color: #2E7D32; }
+.rejected { color: #CC0000; }
+.not-verified { color: #0055B8; }
+.color-dot {
+  width: 16px;
+  height: 16px;
+  margin-right: 0.5rem;
+}
+
+.overlay img {
+  max-width: 80%;
+  max-height: 80vh;
+  border-radius: 8px;
+}
+
+@media (max-width: 992px) {
+  .side-nav {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 0;
+  }
+  
+  .content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+  
+  table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+</style>
 
 </head>
 <body>
@@ -384,6 +389,7 @@ th {
 </div>
 <div class="content">
 <div class="container mt-5">
+  <div class="table-container">
   <table id="memberTable">
         <thead>
           <tr>
@@ -428,7 +434,53 @@ th {
             }
         ?>
         <tr class="<?php echo $statusClass; ?>">
-          <td><?php echo $post['verification_status']; ?></td>
+<td>
+  <?php 
+  // Define rejection messages
+  $reason_messages = [
+    'Profile Image' => 'Profile Image is invalid or doesn\'t match requirements',
+    'Email' => 'Email address is invalid or doesn\'t match our records',
+    'First Name' => 'First name contains invalid characters or doesn\'t match documentation',
+    'Middle Name' => 'Middle name contains discrepancies',
+    'Last Name' => 'Last name doesn\'t match supporting documents',
+    'Suffix' => 'Suffix is incorrect or mismatched',
+    'Age' => 'Age verification failed or doesn\'t match birthdate',
+    'Birthdate' => 'Birthdate is invalid or inconsistent with other records',
+    'Birthplace' => 'Birthplace information is incomplete or mismatched',
+    'Gender' => 'Gender information is inconsistent',
+    'Height' => 'Height measurement is invalid or implausible',
+    'Weight' => 'Weight information is inconsistent',
+    'Phone' => 'Phone number verification failed',
+    'Address' => 'Address validation failed or contains inconsistencies',
+    'Region' => 'Region information doesn\'t match location data',
+    'Zip Code' => 'Zip code is invalid for the provided address',
+    'Religion' => 'Religious affiliation contains discrepancies',
+    'Citizenship' => 'Citizenship documentation is invalid',
+    'Civil Status' => 'Civil status verification failed',
+    'PWD ID' => 'PWD ID is expired or invalid',
+    'BRGY Cert.' => 'Barangay certificate is incomplete or invalid',
+    'Medical Cert' => 'Medical certificate is expired or insufficient',
+    'Proof of Disability' => 'Disability proof documentation is inadequate',
+    'Valid ID' => 'Government ID is expired or unreadable'
+  ];
+  
+if($post['verification_status'] === 'rejected' && !empty($post['reason'])): 
+    $reasons = explode(', ', $post['reason']);
+    $display_reasons = [];
+    
+    foreach($reasons as $reason) {
+      $display_reasons[] = $reason_messages[trim($reason)] ?? $reason . ' is invalid';
+    }
+  ?>
+    <span class="rejection-reason" 
+          style="cursor: pointer; color: #cc0000;"
+          data-reason="<?php echo htmlspecialchars(implode('||', $display_reasons)) ?>">
+      <?php echo $post['verification_status']; ?>
+    </span>
+  <?php else: ?>
+    <?php echo $post['verification_status']; ?>
+  <?php endif; ?>
+</td>
           <td><img src="<?php echo $post['profile_photo_url']; ?>" alt="Profile Image"></td>
           <td><a href="message.php?email=<?php echo urlencode($post['email']); ?>"><?php echo htmlspecialchars($post['email']); ?></a></td>
           <td><?php echo $post['firstName']; ?></td>
@@ -465,6 +517,7 @@ th {
       <?php endforeach; ?>
     </tbody>
   </table>
+</div>  
 </div>
 <!-- Reject Confirmation Modal -->
 <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
@@ -475,6 +528,9 @@ th {
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form id="rejectForm" method="post" action="">
+        <!-- Added hidden action field -->
+        <input type="hidden" name="action" value="reject">
+        
         <div class="modal-body">
           <h5 class="modal-title">Are you sure you want to reject this member?</h5>
           <h5 class="modal-title">Select the reason for rejection:</h5>
@@ -594,7 +650,42 @@ th {
     </div>
   </div>
 </div>
-
+<!-- Reason Modal -->
+<div class="modal fade" id="reasonModal" tabindex="-1" aria-labelledby="reasonModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="reasonModalLabel">Rejection Reasons</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="rejectionReasonText"></p>
+        
+        <!-- Status Legend -->
+        <div class="status-legend mt-4 border-top pt-3">
+          <h6 class="mb-2">Status Colors:</h6>
+          <div class="d-flex gap-3">
+            <div class="legend-item">
+              <span class="color-dot verified"></span>
+              Verified
+            </div>
+            <div class="legend-item">
+              <span class="color-dot rejected"></span>
+              Rejected
+            </div>
+            <div class="legend-item">
+              <span class="color-dot not-verified"></span>
+              Pending Verification
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
 function confirmReject(memberId) {
     // Set the member ID in the modal form
@@ -627,6 +718,29 @@ document.getElementById('confirmRejectButton').addEventListener('click', functio
     form.submit();
   }
 });
+
+document.querySelectorAll('.rejection-reason').forEach(element => {
+  element.addEventListener('click', () => {
+    const reasons = element.dataset.reason.split('||');
+    const modalBody = document.getElementById('rejectionReasonText');
+    
+    // Clear previous content
+    modalBody.innerHTML = '';
+    
+    // Create list elements
+    const list = document.createElement('ul');
+    reasons.forEach(reason => {
+      const li = document.createElement('li');
+      li.textContent = reason;
+      li.style.marginBottom = '8px';
+      list.appendChild(li);
+    });
+    
+    modalBody.appendChild(list);
+    new bootstrap.Modal(document.getElementById('reasonModal')).show();
+  });
+});
+
 </script>
 </div>
 </body>
