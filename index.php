@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               // Bind parameters ('sss' - string, string, string for status, reason, and memberId)
               $updateStmt->bind_param('sss', $status, $reasonsList, $memberId); 
               if ($updateStmt->execute()) {
-                  header("Location: admin.php"); // Redirect after success
+                  header("Location: index.php"); // Redirect after success
                   exit();
               } else {
                   echo "Error updating status: " . $updateStmt->error;
@@ -347,7 +347,31 @@ td img {
   max-height: 80vh;
   border-radius: 8px;
 }
+#imageModal .modal-content {
+  background: rgba(0, 0, 0, 0.9);
+  position: relative;
+}
 
+#imageModal .btn-close {
+  filter: invert(1);
+  opacity: 0.8;
+  margin: 1rem;
+}
+
+#imageModal .btn-danger {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: all 0.2s ease;
+}
+
+#imageModal .btn-danger:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+#imageModal .modal-body img {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
 @media (max-width: 992px) {
   .side-nav {
     width: 100%;
@@ -384,7 +408,7 @@ td img {
 </nav>
 <div class="side-nav"><br>
 <p><i class="bi bi-person-check"></i> Admin Panel</p>
-<a href="admin.php" class="active"><i class="bi bi-house"></i> Member</a>
+<a href="index.php" class="active"><i class="bi bi-house"></i> Member</a>
     <a href="skill-assessment.php"><i class="bi bi-briefcase"></i> Skill Assessment</a>
 </div>
 <div class="content">
@@ -650,6 +674,25 @@ if($post['verification_status'] === 'rejected' && !empty($post['reason'])):
     </div>
   </div>
 </div>
+<!-- Add this modal structure -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content border-0 bg-transparent">
+      <div class="modal-header border-0 position-absolute top-0 end-0 z-1">
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center p-0">
+        <img id="modalImage" class="img-fluid" style="max-height: 80vh;">
+        <button type="button" 
+                class="btn btn-danger position-fixed top-0 end-0 m-3" 
+                data-bs-dismiss="modal"
+                style="z-index: 2">
+          <i class="bi bi-x-lg"></i> Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Reason Modal -->
 <div class="modal fade" id="reasonModal" tabindex="-1" aria-labelledby="reasonModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -660,7 +703,6 @@ if($post['verification_status'] === 'rejected' && !empty($post['reason'])):
       </div>
       <div class="modal-body">
         <p id="rejectionReasonText"></p>
-        
         <!-- Status Legend -->
         <div class="status-legend mt-4 border-top pt-3">
           <h6 class="mb-2">Status Colors:</h6>
@@ -739,6 +781,22 @@ document.querySelectorAll('.rejection-reason').forEach(element => {
     modalBody.appendChild(list);
     new bootstrap.Modal(document.getElementById('reasonModal')).show();
   });
+});
+
+// Initialize Bootstrap modal
+const imageModal = new bootstrap.Modal('#imageModal');
+
+// Image click handler
+document.querySelectorAll('td img').forEach(img => {
+  img.addEventListener('click', () => {
+    document.getElementById('modalImage').src = img.src;
+    imageModal.show();
+  });
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') imageModal.hide();
 });
 
 </script>
